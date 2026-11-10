@@ -1,0 +1,15 @@
+<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guidance du groupe | Opérateur</title><link rel="stylesheet" href="/style.css"><main>
+<header><div><small>GUIDANCE MANUELLE</small><h1>Votre poste de guidance</h1><div id="session" class="muted"></div></div><span id="connection" class="badge">Connexion…</span></header>
+<div class="card"><strong>Écran du groupe</strong><p class="muted">Partagez ce lien avec le groupe associé à cette session.</p><code id="link"></code><div class="row" style="margin-top:14px"><button id="copy" class="secondary">Copier le lien</button><button id="preview" class="secondary">Tester sur ce Mac</button></div></div>
+<div class="grid"><section class="card"><h2>Composer une guidance</h2>
+<form id="compose"><label for="text">Message destiné au groupe</label><textarea id="text" lang="fr" spellcheck="true" maxlength="2000" required placeholder="Tapez votre guidance ici…"></textarea>
+<label for="category">Catégorie de recherche</label><select id="category"><option value="unspecified">Non précisée</option><option value="uncertainty">Clarifier l’incertitude</option><option value="data_quality">Examiner les données</option><option value="alternatives">Explorer les explications</option><option value="next_step">Choisir une prochaine étape</option><option value="other">Autre</option></select>
+<label for="note">Pourquoi intervenir ? (facultatif, visible seulement ici)</label><textarea id="note" maxlength="2000" style="min-height:75px"></textarea>
+<div class="row" style="margin-top:18px"><button type="submit" class="standard" value="standard" disabled>Envoyer sans son</button><button type="submit" class="priority" value="priority" disabled>Envoyer avec notification sonore</button><span id="length" class="muted">0 / 2000</span></div><div id="notice" class="notice" role="status"></div></form>
+</section></div><section class="card"><h2>Messages envoyés</h2><div id="history"></div></section>
+<div class="card row"><button id="export" class="secondary">Télécharger le récapitulatif CSV</button><span class="muted">Sauvegarde automatique après chaque message.</span></div>
+<p id="backup" class="muted" role="status"></p>
+<p class="muted">« Affiché » signifie qu’un écran actif a confirmé le rendu du message. </p>
+</main><script type="module" src="/operator.js"></script>
+</html>
