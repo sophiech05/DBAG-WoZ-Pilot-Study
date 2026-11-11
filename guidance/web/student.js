@@ -52,12 +52,25 @@ function chime() {
     tone.stop(now + 0.25);
 }
 
+// Student-side priority indicator (independent of browser audio permissions).
+function priorityLabel(priority) {
+    const label = document.createElement("span");
+    label.className = "guidance-priority-label";
+    label.textContent = priority ? "Prioritaire" : "Non prioritaire";
+    label.style.cssText = priority
+        ? "display:inline-block;margin-left:10px;padding:4px 9px;border-radius:999px;background:#f8dfdf;color:#762b2b;font-size:12px;font-weight:700;vertical-align:middle;"
+        : "display:inline-block;margin-left:10px;padding:4px 9px;border-radius:999px;background:#d9efdf;color:#185331;font-size:12px;font-weight:700;vertical-align:middle;";
+    return label;
+}
+
 function render(messages) {
     const newest = messages.at(-1);
     if (!newest || newestId === newest.id) return;
     newestId = newest.id;
     $("latest").textContent = newest.text;
     $("time").textContent = `Guidance reçue à ${clock(newest.sent_utc)}`;
+    $("card").querySelector(".guidance-priority-label")?.remove();
+    $("time").after(priorityLabel(newest.priority));
     $("card").classList.remove("new");
     void $("card").offsetWidth;
     $("card").classList.add("new");
@@ -70,7 +83,7 @@ function render(messages) {
         time.textContent = clock(message.sent_utc);
         const text = document.createElement("p");
         text.textContent = message.text;
-        item.append(time, text);
+        item.append(time, priorityLabel(message.priority), text);
         $("history").append(item);
     }
 }
