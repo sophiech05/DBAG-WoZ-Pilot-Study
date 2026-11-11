@@ -1,0 +1,57 @@
+<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guidance du groupe | Opérateur</title><style>
+/* Operator-only two-column layout. Message editor stays visible. */
+.operator-guidance-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:20px;align-items:start}
+.operator-guidance-layout>.card{min-width:0}
+#guidance-ideas{margin-top:0}
+#guidance-ideas .guidance-target{padding:10px 0;border-top:1px solid #dce4df}
+#guidance-ideas .guidance-target h3{font-size:14px;margin:0 0 5px;color:#18332f}
+#guidance-ideas .guidance-idea{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0}
+#guidance-ideas .guidance-idea-content{min-width:0;flex:1}
+#guidance-ideas .guidance-idea small{font-size:11px;color:#60716c}
+#guidance-ideas .guidance-idea p{font-size:12px;line-height:1.4;margin:2px 0 0;overflow-wrap:anywhere}
+#guidance-ideas .guidance-idea button{flex:0 0 auto;max-width:126px;font-size:11px;line-height:1.3;padding:7px 8px;white-space:normal}
+#guidance-ideas #idea-copy-status{font-size:12px}
+@media(max-width:800px){.operator-guidance-layout{grid-template-columns:1fr}}
+</style><link rel="stylesheet" href="/style.css"><main>
+<header><div><h1>Votre poste de guidance</h1><div id="session" class="muted"></div></div><span id="connection" class="badge">Connexion…</span></header>
+<div class="card"><strong>Écran du groupe</strong><code id="link"></code><div class="row" style="margin-top:14px"><button id="copy" class="secondary">Copier le lien</button><button id="preview" class="secondary">Tester sur ce Mac</button></div></div>
+<div class="operator-guidance-layout"><section class="card"><h2>Composer une guidance</h2>
+<form id="compose"><label for="text">Message destiné au groupe</label><textarea id="text" lang="fr" spellcheck="true" maxlength="2000" required placeholder="Tapez votre guidance ici…"></textarea>
+<label for="category">Catégorie de recherche</label><select id="category"><option value="unspecified">Non précisée</option><option value="uncertainty">Clarifier l’incertitude</option><option value="data_quality">Examiner les données</option><option value="alternatives">Explorer les explications</option><option value="next_step">Choisir une prochaine étape</option><option value="other">Autre</option></select>
+<label for="note">Pourquoi intervenir ? (facultatif, visible seulement ici)</label><textarea id="note" maxlength="2000" style="min-height:75px"></textarea>
+<div class="row" style="margin-top:18px"><button type="submit" class="standard" value="standard" disabled>Envoyer sans son</button><button type="submit" class="priority" value="priority" disabled>Envoyer avec notification sonore</button><span id="length" class="muted">0 / 2000</span></div><div id="notice" class="notice" role="status"></div></form>
+</section><aside id="guidance-ideas" class="card guidance-ideas" aria-labelledby="guidance-ideas-heading">
+<h2 id="guidance-ideas-heading">💡 Idées de guidage <span class="muted" style="font-size:13px;font-weight:normal">(à titre d'inspiration)</span></h2>
+<div class="guidance-target"><h3>Démarche et procédures</h3>
+<div class="guidance-idea"><div class="guidance-idea-content"><small>Aide structurée</small><p>Commencez par identifier les grandeurs utiles à votre analyse, puis choisissez comment représenter leur relation.</p></div><button type="button" class="secondary use-idea" data-idea-id="procedural_1" data-idea="Commencez par identifier les grandeurs utiles à votre analyse, puis choisissez comment représenter leur relation." aria-label="Utiliser comme brouillon : Démarche et procédures">Utiliser comme brouillon</button></div>
+<div class="guidance-idea"><div class="guidance-idea-content"><small>Conseil stratégique</small><p>Pour vérifier votre démarche, envisagez une autre méthode d’analyse et comparez ce qu’elle permet de montrer.</p></div><button type="button" class="secondary use-idea" data-idea-id="procedural_2" data-idea="Pour vérifier votre démarche, envisagez une autre méthode d’analyse et comparez ce qu’elle permet de montrer." aria-label="Utiliser comme brouillon : Démarche et procédures">Utiliser comme brouillon</button></div>
+</div>
+<div class="guidance-target"><h3>Compréhension conceptuelle</h3>
+<div class="guidance-idea"><div class="guidance-idea-content"><small>Question</small><p>Comment le modèle physique étudié permet-il d’expliquer la tendance observée ?</p></div><button type="button" class="secondary use-idea" data-idea-id="conceptual_1" data-idea="Comment le modèle physique étudié permet-il d’expliquer la tendance observée ?" aria-label="Utiliser comme brouillon : Compréhension conceptuelle">Utiliser comme brouillon</button></div>
+<div class="guidance-idea"><div class="guidance-idea-content"><small>Indice</small><p>Pensez aux hypothèses du modèle : sont-elles compatibles avec les conditions de votre expérience ?</p></div><button type="button" class="secondary use-idea" data-idea-id="conceptual_2" data-idea="Pensez aux hypothèses du modèle : sont-elles compatibles avec les conditions de votre expérience ?" aria-label="Utiliser comme brouillon : Compréhension conceptuelle">Utiliser comme brouillon</button></div>
+</div>
+<div class="guidance-target"><h3>Raisonnement épistémique</h3>
+<div class="guidance-idea"><div class="guidance-idea-content"><small>Conseil stratégique</small><p>Un résultat inattendu n’est pas nécessairement une erreur. Examinez plusieurs explications avant de l’écarter.</p></div><button type="button" class="secondary use-idea" data-idea-id="epistemic_1" data-idea="Un résultat inattendu n’est pas nécessairement une erreur. Examinez plusieurs explications avant de l’écarter." aria-label="Utiliser comme brouillon : Raisonnement épistémique">Utiliser comme brouillon</button></div>
+<div class="guidance-idea"><div class="guidance-idea-content"><small>Question</small><p>Dans quelle mesure vos données permettent-elles de soutenir votre conclusion ?</p></div><button type="button" class="secondary use-idea" data-idea-id="epistemic_2" data-idea="Dans quelle mesure vos données permettent-elles de soutenir votre conclusion ?" aria-label="Utiliser comme brouillon : Raisonnement épistémique">Utiliser comme brouillon</button></div>
+</div>
+<div class="guidance-target"><h3>Collaboration</h3>
+<div class="guidance-idea"><div class="guidance-idea-content"><small>Invitation à discuter</small><p>Comparez vos interprétations avant de retenir une conclusion commune.</p></div><button type="button" class="secondary use-idea" data-idea-id="collaborative_1" data-idea="Comparez vos interprétations avant de retenir une conclusion commune." aria-label="Utiliser comme brouillon : Collaboration">Utiliser comme brouillon</button></div>
+<div class="guidance-idea"><div class="guidance-idea-content"><small>Question</small><p>Quels arguments chacun peut-il apporter pour défendre ou nuancer cette interprétation ?</p></div><button type="button" class="secondary use-idea" data-idea-id="collaborative_2" data-idea="Quels arguments chacun peut-il apporter pour défendre ou nuancer cette interprétation ?" aria-label="Utiliser comme brouillon : Collaboration">Utiliser comme brouillon</button></div>
+</div>
+<div class="guidance-target"><h3>Régulation métacognitive</h3>
+<div class="guidance-idea"><div class="guidance-idea-content"><small>Prise de recul</small><p>Faites le point : qu’avez-vous établi jusqu’ici, et que reste-t-il à vérifier ?</p></div><button type="button" class="secondary use-idea" data-idea-id="metacognitive_1" data-idea="Faites le point : qu’avez-vous établi jusqu’ici, et que reste-t-il à vérifier ?" aria-label="Utiliser comme brouillon : Régulation métacognitive">Utiliser comme brouillon</button></div>
+<div class="guidance-idea"><div class="guidance-idea-content"><small>Question</small><p>Votre stratégie actuelle vous rapproche-t-elle de la question de recherche ?</p></div><button type="button" class="secondary use-idea" data-idea-id="metacognitive_2" data-idea="Votre stratégie actuelle vous rapproche-t-elle de la question de recherche ?" aria-label="Utiliser comme brouillon : Régulation métacognitive">Utiliser comme brouillon</button></div>
+</div>
+<div class="guidance-target"><h3>Régulation affective</h3>
+<div class="guidance-idea"><div class="guidance-idea-content"><small>Soutien à l’engagement</small><p>Face à un résultat difficile à interpréter, commencez par ce que vous comprenez déjà et avancez progressivement.</p></div><button type="button" class="secondary use-idea" data-idea-id="affective_1" data-idea="Face à un résultat difficile à interpréter, commencez par ce que vous comprenez déjà et avancez progressivement." aria-label="Utiliser comme brouillon : Régulation affective">Utiliser comme brouillon</button></div>
+<div class="guidance-idea"><div class="guidance-idea-content"><small>Invitation à explorer</small><p>Une surprise dans vos données peut ouvrir une nouvelle piste : qu’aimeriez-vous examiner de plus près ?</p></div><button type="button" class="secondary use-idea" data-idea-id="affective_2" data-idea="Une surprise dans vos données peut ouvrir une nouvelle piste : qu’aimeriez-vous examiner de plus près ?" aria-label="Utiliser comme brouillon : Régulation affective">Utiliser comme brouillon</button></div>
+</div>
+<p id="idea-copy-status" class="muted" role="status" aria-live="polite"></p>
+</aside>
+</div><section class="card"><h2>Messages envoyés</h2><div id="history"></div></section>
+<div class="card row"><button id="export" class="secondary">Télécharger le récapitulatif CSV</button><span class="muted">Sauvegarde automatique après chaque message.</span></div>
+<p id="backup" class="muted" role="status"></p>
+<p class="muted">« Affiché » signifie qu’un écran actif a confirmé le rendu du message. </p>
+</main><script type="module" src="/operator.js"></script>
+</html>

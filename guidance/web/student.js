@@ -7,16 +7,28 @@ const clientId = sessionStorage.getItem(clientKey) || crypto.randomUUID();
 sessionStorage.setItem(clientKey, clientId);
 const displayed = new Set();
 const chimes = new Set();
+const queuedPriority = new Set();
+let initialMessagesLoaded = false;
 let audio;
 let newestId;
 
 async function startAudio() {
     audio ??= new AudioContext();
     if (audio.state !== "running") await audio.resume();
+    if (audio.state === "running") playPendingNotifications();
 }
 
 function unlockAudio() {
     if (audio?.state !== "running") startAudio().catch(() => {});
+    else playPendingNotifications();
+}
+
+function playPendingNotifications() {
+    if (audio?.state !== "running" || !queuedPriority.size) return;
+    // A single chime signals outstanding priority guidance without a burst of tones.
+    chime();
+    for (const id of queuedPriority) chimes.add(id);
+    queuedPriority.clear();
 }
 
 $("sound").onclick = async () => {
@@ -70,9 +82,16 @@ async function update() {
         $("connection").textContent = state.active ? `Groupe ${state.group} · Connecté` : "Session terminée";
         render(state.messages);
         const newest = state.messages.at(-1);
-        for (const message of state.messages) {
-            if (message.priority && !chimes.has(message.id) && audio?.state === "running") chime();
-            chimes.add(message.id);
+        if (!initialMessagesLoaded) {
+            // Do not play notifications for messages that predate opening this page.
+            for (const message of state.messages) chimes.add(message.id);
+            initialMessagesLoaded = true;
+        } else {
+            for (const message of state.messages) {
+                if (!message.priority || chimes.has(message.id) || queuedPriority.has(message.id)) continue;
+                queuedPriority.add(message.id);
+            }
+            playPendingNotifications();
         }
         if (!newest || displayed.has(newest.id) || document.hidden) return;
         await new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
@@ -86,8 +105,8 @@ async function update() {
 
 if (token) {
     unlockAudio();
-    document.addEventListener("click", unlockAudio);
-    document.addEventListener("keydown", unlockAudio);
+    document.addEventListener("pointerdown", unlockAudio, { capture: true });
+    document.addEventListener("keydown", unlockAudio, { capture: true });
     pollEvery(update);
 } else {
     $("connection").textContent = "Ouvrez le lien privé du groupe.";

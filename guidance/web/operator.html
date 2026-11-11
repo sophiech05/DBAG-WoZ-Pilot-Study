@@ -19,15 +19,28 @@
 #guidance-ideas{min-height:0;overflow-y:auto;overscroll-behavior:contain}
 @media(max-width:800px){#guidance-ideas{height:auto!important;max-height:65vh}}
 </style><link rel="stylesheet" href="/style.css"><main>
-<header><div><small>GUIDANCE MANUELLE</small><h1>Votre poste de guidance</h1><div id="session" class="muted"></div></div><span id="connection" class="badge">Connexion…</span></header>
-<div class="card"><strong>Écran du groupe</strong><p class="muted">Partagez ce lien avec le groupe associé à cette session.</p><code id="link"></code><div class="row" style="margin-top:14px"><button id="copy" class="secondary">Copier le lien</button><button id="preview" class="secondary">Tester sur ce Mac</button></div></div>
+<header style="margin-bottom: 30px;">
+  <div>
+    <h1>Votre poste de guidance</h1>
+    <div id="session" class="muted"></div>
+  </div>
+  <span id="connection" class="badge">Connexion…</span>
+</header>
+
+<div class="card">
+  <strong>Écran du groupe</strong>
+  <code id="link"></code>
+  <div class="row" style="margin-top:14px">
+    <button id="copy" class="secondary">Copier le lien</button>
+    <button id="preview" class="secondary">Tester sur ce Mac</button>
+  </div>
+</div>
 <div class="operator-guidance-layout"><section class="card"><h2>Composer une guidance</h2>
 <form id="compose"><label for="text">Message destiné au groupe</label><textarea id="text" maxlength="2000" required placeholder="Tapez votre guidance ici…" lang="fr" spellcheck="true"></textarea>
 <label for="note">Pourquoi intervenir ? (facultatif, visible seulement ici)</label><textarea id="note" maxlength="2000" style="min-height:75px"></textarea>
-<div class="row" style="margin-top:18px"><button type="submit" class="standard" value="standard" disabled><span style="display:block;font-weight:700">Guidance non prioritaire</span><span style="display:block;font-size:12px;margin-top:3px;font-weight:400">Envoi sans notif. sonore</span></button><button type="submit" class="priority" value="priority" disabled><span style="display:block;font-weight:700">Guidance prioritaire</span><span style="display:block;font-size:12px;margin-top:3px;font-weight:400">Envoi avec notif. sonore</span></button><span id="length" class="muted">0 / 2000</span></div><div id="notice" class="notice" role="status"></div></form>
+<div class="row" style="margin-top:18px"><button type="submit" class="standard" value="standard" disabled><span style="display:block;font-weight:700">Envoi non prioritaire</span><span style="display:block;font-size:12px;margin-top:3px;font-weight:400">*Sans* notif. sonore</span></button><button type="submit" class="priority" value="priority" disabled><span style="display:block;font-weight:700">Envoi prioritaire</span><span style="display:block;font-size:12px;margin-top:3px;font-weight:400">*Avec* notif. sonore</span></button><span id="length" class="muted">0 / 2000</span></div><div id="notice" class="notice" role="status"></div></form>
 </section><aside id="guidance-ideas" class="card guidance-ideas" aria-labelledby="guidance-ideas-heading">
-<h2 id="guidance-ideas-heading">💡 Idées de guidage <span class="muted" style="font-size:13px;font-weight:normal">(facultatif)</span></h2>
-<p class="muted">Ces exemples sont des points de départ, pas des messages à envoyer tels quels. Adaptez-les aux échanges observés ou formulez librement vos propres guidages.</p>
+<h2 id="guidance-ideas-heading">💡 Idées de guidage <span class="muted" style="font-size:13px;font-weight:normal">(à titre d'inspiration)</span></h2>
 <div class="guidance-target"><h3>Démarche et procédures</h3>
 <div class="guidance-idea"><div class="guidance-idea-content"><small>Aide structurée</small><p>Commencez par identifier les grandeurs utiles à votre analyse, puis choisissez comment représenter leur relation.</p></div><button type="button" class="secondary use-idea" data-idea-id="procedural_1" data-idea="Commencez par identifier les grandeurs utiles à votre analyse, puis choisissez comment représenter leur relation." aria-label="Utiliser comme brouillon : Démarche et procédures">Utiliser comme brouillon</button></div>
 <div class="guidance-idea"><div class="guidance-idea-content"><small>Conseil stratégique</small><p>Pour vérifier votre démarche, envisagez une autre méthode d’analyse et comparez ce qu’elle permet de montrer.</p></div><button type="button" class="secondary use-idea" data-idea-id="procedural_2" data-idea="Pour vérifier votre démarche, envisagez une autre méthode d’analyse et comparez ce qu’elle permet de montrer." aria-label="Utiliser comme brouillon : Démarche et procédures">Utiliser comme brouillon</button></div>
