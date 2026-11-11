@@ -19,3 +19,27 @@ code{overflow-wrap:anywhere}details{margin-top:20px}summary{cursor:pointer;paddi
 .grid{grid-template-columns:1fr}
 .standard{background:#d9efdf;color:#173e2e}
 .priority{background:#f8dfdf;color:#602626}
+
+/* DBAG – Optional guidance ideas */
+#dbag-guidance-ideas {
+  margin: 16px 0;
+  padding: 12px 14px;
+  border: 1px solid #dce4df;
+  border-radius: 10px;
+  background: #f8faf8;
+}
+
+#dbag-guidance-ideas summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+#dbag-guidance-ideas .idea-row {
+  padding: 12px 0;
+  border-top: 1px solid #dce4df;
+}
+
+#dbag-guidance-ideas .idea-row button {
+  padding: 6px 12px;
+  font-size: 13px;
+}

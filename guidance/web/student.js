@@ -10,14 +10,21 @@ const chimes = new Set();
 let audio;
 let newestId;
 
+async function startAudio() {
+    audio ??= new AudioContext();
+    if (audio.state !== "running") await audio.resume();
+}
+
+function unlockAudio() {
+    if (audio?.state !== "running") startAudio().catch(() => {});
+}
+
 $("sound").onclick = async () => {
     try {
-        audio ??= new AudioContext();
-        await audio.resume();
-        $("sound").textContent = "Notifications sonores activées";
-        $("sound").disabled = true;
-    } catch {
-        $("sound").textContent = "Réessayer d’activer les notifications sonores";
+        await startAudio();
+        chime();
+    } catch (error) {
+        console.error("Impossible de jouer le son de test.", error);
     }
 };
 
@@ -77,5 +84,11 @@ async function update() {
     }
 }
 
-if (token) pollEvery(update);
-else $("connection").textContent = "Ouvrez le lien privé du groupe.";
+if (token) {
+    unlockAudio();
+    document.addEventListener("click", unlockAudio);
+    document.addEventListener("keydown", unlockAudio);
+    pollEvery(update);
+} else {
+    $("connection").textContent = "Ouvrez le lien privé du groupe.";
+}

@@ -105,7 +105,8 @@ class Session:
             writer = csv.writer(output)
             writer.writerow(['session_id', 'message_id', 'sent_utc', 'sent_elapsed_s',
                              'text', 'category', 'operator_note', 'priority', 'first_displayed_utc',
-                             'first_displayed_elapsed_s', 'display_confirmations'])
+                             'first_displayed_elapsed_s', 'display_confirmations',
+                             'guidance_source', 'suggestion_id', 'suggestion_edited'])
             def cell(value):
                 # Prevent spreadsheet formulas if free text begins with a formula character.
                 return "'" + value if isinstance(value, str) and value.lstrip().startswith(('=', '+', '-', '@')) else value
@@ -114,7 +115,9 @@ class Session:
                 writer.writerow([cell(v) for v in [self.session_id, message['id'],
                     message['sent_utc'], message['sent_elapsed_s'], message['text'],
                     message['category'], message['operator_note'], message['priority'], first.get('displayed_utc', ''),
-                    first.get('displayed_elapsed_s', ''), len(message['deliveries'])]])
+                    first.get('displayed_elapsed_s', ''), len(message['deliveries']),
+                    message.get('guidance_source', ''), message.get('suggestion_id', ''),
+                    message.get('suggestion_edited', '')]])
             return output.getvalue().encode('utf-8-sig')
 
 
@@ -228,11 +231,27 @@ class Handler(BaseHTTPRequestHandler):
         priority = data.get('priority', False)
         if not isinstance(priority, bool):
             return 400, {'error': 'Priorité invalide.'}
+        guidance_source = data.get('guidance_source', 'free')
+        suggestion_id = data.get('suggestion_id', '')
+        suggestion_edited = data.get('suggestion_edited', False)
+        allowed_ids = {f'{target}_{i}' for target in
+                       ('procedural', 'conceptual', 'epistemic', 'collaborative', 'metacognitive', 'affective')
+                       for i in (1, 2)}
+        if guidance_source not in ('free', 'suggestion') or not isinstance(suggestion_id, str) or \
+                not isinstance(suggestion_edited, bool):
+            return 400, {'error': 'Origine du guidage invalide.'}
+        if guidance_source == 'suggestion' and suggestion_id not in allowed_ids:
+            return 400, {'error': 'Identifiant de suggestion invalide.'}
+        if guidance_source == 'free' and (suggestion_id or suggestion_edited):
+            return 400, {'error': 'Métadonnées de suggestion incohérentes.'}
         message_id = str(uuid.uuid4())
         event = self.session.log('guidance_sent', {'message_id': message_id,
-            'text': text.strip(), 'category': category, 'priority': priority, 'operator_note': note.strip()})
+            'text': text.strip(), 'category': category, 'priority': priority, 'operator_note': note.strip(),
+            'guidance_source': guidance_source, 'suggestion_id': suggestion_id, 'suggestion_edited': suggestion_edited})
         self.session.messages.append({'id': message_id, 'text': text.strip(),
-            'category': category, 'priority': priority, 'operator_note': note.strip(), 'sent_utc': event['utc'],
+            'category': category, 'priority': priority, 'operator_note': note.strip(),
+            'guidance_source': guidance_source, 'suggestion_id': suggestion_id, 'suggestion_edited': suggestion_edited,
+            'sent_utc': event['utc'],
             'sent_elapsed_s': event['elapsed_s'], 'deliveries': []})
         self.session.requests[request] = message_id
         self.session.persist_recap()

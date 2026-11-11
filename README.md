@@ -22,7 +22,7 @@ The terminal prints two HTTPS links per group. Send the full **Operator** link t
 | --- | --- |
 | Open the operator link and check the group number. | Open the student link and check the group number. |
 | Type guidance in French. Optionally select a research category and add a private operator note. | Leave the page open. New messages appear automatically, with earlier messages below. |
-| Select **Envoyer sans son** or **Envoyer avec notification sonore**. | Select **Activer les notifications sonores** once after opening the page if priority guidance should chime. |
+| Select **Envoyer sans son** or **Envoyer avec notification sonore**. | Priority guidance plays a chime when the browser permits audio. Select **Tester les notifications sonores** to check the sound and unlock audio if the browser requires a click. |
 
 Treat the full links as credentials. Anyone with an operator link can send guidance and view that group's recap. Anyone with a student link can see that group's messages. Links use separate random credentials for every role and group, and expire when the launcher stops. Cloudflare Quick Tunnels are intended for testing and use a new hostname each time. Rehearse from the actual HEP and remote networks before the session. [Cloudflare Quick Tunnels](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/)
 

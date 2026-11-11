@@ -1,5 +1,23 @@
 import { byId as $, sessionToken, apiClient, clock, pollEvery } from "./common.js";
 
+// Guidance suggestions are optional and never send messages automatically.
+// Provenance describes the operator's use of a draft, not its pedagogical quality.
+let selectedIdea = null;
+for (const button of document.querySelectorAll(".use-idea")) {
+    button.addEventListener("click", () => {
+        const field = $("text");
+        const suggestion = button.dataset.idea;
+        if (field.value.trim() && field.value.trim() !== suggestion &&
+            !window.confirm("Remplacer le brouillon actuel par cette suggestion ?")) return;
+        selectedIdea = { id: button.dataset.ideaId, original: suggestion };
+        field.value = suggestion;
+        field.dispatchEvent(new Event("input", { bubbles: true }));
+        field.focus();
+        field.setSelectionRange(field.value.length, field.value.length);
+        $("idea-copy-status").textContent = "Brouillon inséré : adaptez-le librement avant l’envoi.";
+    });
+}
+
 const token = sessionToken("operator");
 const api = apiClient(token);
 const sendButtons = document.querySelectorAll("#compose button[type=submit]");
@@ -19,8 +37,7 @@ function renderHistory(messages) {
         const item = document.createElement("div");
         item.className = "message";
         const time = document.createElement("small");
-        const category = [...$("category").options].find((option) => option.value === message.category);
-        time.textContent = [clock(message.sent_utc), category?.text, message.priority ? "Prioritaire" : "Sans son"].join(" · ");
+        time.textContent = [clock(message.sent_utc), message.priority ? "Prioritaire" : "Sans son"].join(" · ");
         const text = document.createElement("p");
         text.textContent = message.text;
         const status = document.createElement("div");
@@ -63,7 +80,11 @@ function updateLength() {
     $("length").textContent = `${$("text").value.length} / 2000`;
 }
 
-$("text").addEventListener("input", updateLength);
+$("text").addEventListener("input", () => {
+    updateLength();
+    // Deleting a suggestion completely returns the message to free composition.
+    if (!$("text").value.trim()) selectedIdea = null;
+});
 $("compose").addEventListener("submit", async (event) => {
     event.preventDefault();
     if (sending || !state?.active) return;
@@ -72,17 +93,21 @@ $("compose").addEventListener("submit", async (event) => {
     pending ??= {
         request_id: crypto.randomUUID(),
         text,
-        category: $("category").value,
+        category: "unspecified",
         operator_note: $("note").value.trim(),
+        guidance_source: selectedIdea ? "suggestion" : "free",
+        suggestion_id: selectedIdea?.id ?? "",
+        suggestion_edited: selectedIdea ? text !== selectedIdea.original : false,
         priority: event.submitter?.value === "priority",
     };
     sending = true;
-    for (const id of ["text", "note", "category"]) $(id).disabled = true;
+    for (const id of ["text", "note"]) $(id).disabled = true;
     updateButtons();
     $("notice").textContent = "Envoi…";
     try {
         await api("/api/send", pending);
         pending = undefined;
+        selectedIdea = null;
         $("text").value = "";
         $("note").value = "";
         updateLength();
@@ -91,7 +116,7 @@ $("compose").addEventListener("submit", async (event) => {
         $("notice").textContent = `${error.message} Cliquez de nouveau pour réessayer le même envoi.`;
     } finally {
         sending = false;
-        for (const id of ["text", "note", "category"]) $(id).disabled = Boolean(pending);
+        for (const id of ["text", "note"]) $(id).disabled = Boolean(pending);
         updateButtons();
     }
 });
@@ -124,3 +149,14 @@ $("export").onclick = async () => {
 
 if (token) pollEvery(update);
 else $("connection").textContent = "Ouvrez le lien privé de l’opérateur.";
+
+// DBAG_PANEL_EQUAL_HEIGHT: keep ideas scrollable beside the editor.
+const editorPanel = document.querySelector('.operator-guidance-layout > section.card');
+const ideasPanel = document.getElementById('guidance-ideas');
+if (editorPanel && ideasPanel) {
+    const syncIdeasHeight = () => {
+        ideasPanel.style.height = `${editorPanel.getBoundingClientRect().height}px`;
+    };
+    new ResizeObserver(syncIdeasHeight).observe(editorPanel);
+    syncIdeasHeight();
+}
