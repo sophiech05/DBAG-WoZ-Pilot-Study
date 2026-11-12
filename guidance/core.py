@@ -237,6 +237,15 @@ class Handler(BaseHTTPRequestHandler):
         allowed_ids = {f'{target}_{i}' for target in
                        ('procedural', 'conceptual', 'epistemic', 'collaborative', 'metacognitive', 'affective')
                        for i in (1, 2)}
+        allowed_ids.update({
+            'prep_epistemic', 'prep_procedural', 'prep_collaboration',
+            'analysis_procedural_summary', 'analysis_conceptual',
+            'analysis_procedural_calculation',
+            'evaluation_epistemic_compare', 'evaluation_epistemic_explain',
+            'evaluation_affective_metacognitive',
+            'communication_procedural', 'communication_epistemic',
+            'communication_collaboration',
+        })
         if guidance_source not in ('free', 'suggestion') or not isinstance(suggestion_id, str) or \
                 not isinstance(suggestion_edited, bool):
             return 400, {'error': 'Origine du guidage invalide.'}
