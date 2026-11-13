@@ -245,6 +245,8 @@ class Handler(BaseHTTPRequestHandler):
             'evaluation_affective_metacognitive',
             'communication_procedural', 'communication_epistemic',
             'communication_collaboration',
+            'welcome_intro',
+            'activity_start',
         })
         if guidance_source not in ('free', 'suggestion') or not isinstance(suggestion_id, str) or \
                 not isinstance(suggestion_edited, bool):

@@ -1,0 +1,10 @@
+diff --git a/guidance/core.py b/guidance/core.py
+--- a/guidance/core.py
++++ b/guidance/core.py
+@@ -246,6 +246,8 @@ class Handler(BaseHTTPRequestHandler):
+             'evaluation_affective_metacognitive',
+             'communication_procedural', 'communication_epistemic',
+             'communication_collaboration',
++            'welcome_intro',
++            'activity_start',
+         })
